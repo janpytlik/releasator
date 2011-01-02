@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager" inherit-compiler-output="true">
+    <exclude-output />
+    <content url="file://$USER_HOME$/.griffon/0.9.2-beta-3/projects/releasator/plugins/miglayout-0.1">
+      <excludeFolder url="file://$USER_HOME$/.griffon/0.9.2-beta-3/projects/releasator/plugins/miglayout-0.1/target/classes" />
+      <excludeFolder url="file://$USER_HOME$/.griffon/0.9.2-beta-3/projects/releasator/plugins/miglayout-0.1/target/test-classes" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" scope="PROVIDED" name="griffon-0.9.2-beta-3" level="application" />
+    <orderEntry type="module-library" exported="">
+      <library name="Griffon:lib">
+        <CLASSES>
+          <root url="file://$USER_HOME$/.griffon/0.9.2-beta-3/projects/releasator/plugins/miglayout-0.1/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+        <jarDirectory url="file://$USER_HOME$/.griffon/0.9.2-beta-3/projects/releasator/plugins/miglayout-0.1/lib" recursive="false" />
+      </library>
+    </orderEntry>
+  </component>
+</module>
+
