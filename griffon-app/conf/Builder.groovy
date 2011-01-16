@@ -8,3 +8,7 @@ root {
     }
 }
 root.'MiglayoutGriffonAddon'.addon=true
+
+root.'griffon.builder.trident.TridentBuilder'.view = '*'
+
+root.'EffectsGriffonAddon'.addon=true

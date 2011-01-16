@@ -1,6 +1,8 @@
 package cz.janpytlik.releasator
 
 import javax.swing.JFileChooser
+import java.awt.event.KeyEvent
+import groovy.xml.MarkupBuilder
 
 /**
  * Created by IntelliJ IDEA.
@@ -10,12 +12,12 @@ import javax.swing.JFileChooser
  */
 class ReleasatorController {
 
-  private static final String IGNORELIST_FILE = "ignorelist.config"
+  private static final String CONFIG_FILE = "configuration.xml"
 
   def model
   def view
 
-  def runAction = { evt ->
+  def runAction = {evt ->
     execOutside {
 
       execAsync {
@@ -85,7 +87,7 @@ class ReleasatorController {
   /**
    * Process file chooser event
    */
-  def browseOne = { evt = null ->
+  def browseOne = {evt = null ->
 
     def openResult = view.fileChooserWindow.showOpenDialog(view.rootFrame)
     if (JFileChooser.APPROVE_OPTION == openResult) {
@@ -95,7 +97,7 @@ class ReleasatorController {
   }
 
   //todo: merge browseOne and browseTwo
-  def browseTwo = { evt = null ->
+  def browseTwo = {evt = null ->
 
     def openResult = view.fileChooserWindow.showOpenDialog(view.rootFrame)
     if (JFileChooser.APPROVE_OPTION == openResult) {
@@ -103,6 +105,85 @@ class ReleasatorController {
       model.enabled = model.actualVersion && model.oldVersion ? true : false
     }
   }
+
+  /**
+   * Open configuration dialog
+   */
+  def configAction = {evt = null ->
+    if (!view.configurationDialog.visible) {
+      model.serverListModel.removeAllElements()
+      loadIgnoreList().each() {
+        model.serverListModel.addElement(it)
+      }
+
+      showDialog("configurationDialog", false)
+    }
+  }
+
+  def doCancel = {
+    hideDialog("configurationDialog")
+  }
+
+  /**
+   * Save configuration
+   */
+  def doSaveConfig = {
+    def writer = new StringWriter()
+    def xml = new MarkupBuilder(writer)
+    xml.config() {
+      ignoreList() {
+        model.serverListModel.toArray().each {
+          ignoreItem it
+        }
+      }
+    }
+    new File(CONFIG_FILE).text = writer.toString()
+    doCancel()
+  }
+
+  /**
+   * Handle Enter key on textfield
+   */
+  def addItemEvent = {evt ->
+    if (evt.keyCode == KeyEvent.VK_ENTER) {
+      addAction();
+    }
+  }
+
+  /**
+   * Add item to the list
+   */
+  def addAction = {
+    model.serverListModel.addElement(view.ignoreItem.text)
+    view.ignoreItem.text = ''
+  }
+
+
+  /**
+   * Remove item from the list
+   */
+  def removeAction = {evt = null ->
+    view.ignoreList.selectedValues.each {value ->
+      model.serverListModel.removeElement(value)
+    }
+  }
+
+
+  private void hideDialog(dialogName) {
+    def dialog = view."$dialogName"
+    dialog.hide()
+  }
+
+  private void showDialog(dialogName, pack = true) {
+    def dialog = view."$dialogName"
+    if (pack) dialog.pack()
+    int x = app.windowManager.windows[0].x + (app.windowManager.windows[0].width - dialog.width) / 2
+    int y = app.windowManager.windows[0].y + (app.windowManager.windows[0].height - dialog.height) / 2
+    dialog.setLocation(x, y)
+    dialog.show()
+  }
+
+
 
   /**
    * Check if the file is in ignore list
@@ -174,12 +255,13 @@ class ReleasatorController {
    * @return file names which will be ignored
    */
   def loadIgnoreList() {
-    def ignoreFile = new File(IGNORELIST_FILE)
     def ignoreList = []
 
+    def ignoreFile = new File(CONFIG_FILE)
     if (ignoreFile.exists()) {
-      ignoreFile.eachLine {
-        ignoreList.add(it)
+      def records = new XmlSlurper().parse(ignoreFile)
+      records.ignoreList.ignoreItem.each {
+        ignoreList.add(it.text())
       }
     }
     ignoreList

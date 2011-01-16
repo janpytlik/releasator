@@ -9,7 +9,7 @@ application {
     //frameClass = 'javax.swing.JFrame'
 }
 mvcGroups {
-    // MVC Group for "releasator"
+      // MVC Group for "releasator"
     'releasator' {
         model = 'cz.janpytlik.releasator.ReleasatorModel'
         controller = 'cz.janpytlik.releasator.ReleasatorController'

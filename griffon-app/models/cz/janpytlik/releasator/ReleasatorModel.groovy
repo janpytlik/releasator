@@ -1,6 +1,7 @@
 package cz.janpytlik.releasator
 
 import groovy.beans.Bindable
+import javax.swing.DefaultListModel
 
 /**
  * Created by IntelliJ IDEA.
@@ -22,4 +23,8 @@ class ReleasatorModel {
   @Bindable def enabled = false
   @Bindable def visible = false
 
-}
+  //Dialog part
+  @Bindable def ignoreItem
+  def serverListModel = new DefaultListModel()
+
+ }
