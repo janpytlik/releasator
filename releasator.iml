@@ -14,7 +14,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="griffon-0.9.2-beta-3" level="application" />
+    <orderEntry type="library" name="griffon-0.9.2-rc1" level="application" />
     <orderEntry type="module-library">
       <library name="Griffon:lib">
         <CLASSES>
